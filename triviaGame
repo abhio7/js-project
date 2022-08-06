@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Corona Virus </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css"
+        integrity="sha512-AyOHI/tIMgoG+32apAs3OdqFowPSDqiz5vLcD2wdhBJ4J/xF1PI6UITcyhS5HCmsiioapRaONqYBvimxzFfnoA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+
+        }
+
+        header {
+            width: 100%;
+            height: 15vh;
+            background-color: #20bf6b;
+        }
+
+        h1 {
+            font-family: 'Carter one', cursive;
+            text-align: center;
+            color: aliceblue;
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            letter-spacing: 15px;
+            text-shadow: 0 1px 0 #efefef,
+                0 2px 0 #efefef,
+                0 3px 0 #efefef,
+                0 4px 0 #efefef,
+                0 1px 0 #efefef,
+                0 30px 5px rgba(0, 0, 0, .1);
+        }
+
+
+
+        section {
+            height: 85vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #7bed7b;
+        }
+
+        .gameArea {
+            width: 50%;
+            height: 500px;
+            padding: 20px 0;
+            background-color: #20bf6b;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0px 10px 20px .8px black;
+        }
+
+        h3 {
+            margin: 5px;
+            font-size: 1.3rem;
+            color: #dff9fb;
+        }
+
+
+
+        button {
+            font-size: 1.1rem;
+            cursor: pointer;
+            outline: none;
+            border: #2f3542;
+            text-decoration: none;
+            margin-top: 0px;
+            color: #eb4d4b;
+        }
+
+        #container {
+            margin: 20px;
+        }
+
+        .row {
+            width: 100%;
+            margin: 2rem;
+            margin-left: 0;
+            margin-bottom: 0;
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Trivia game</h1>
+    </header>
+
+
+
+    <section>
+        <div class="gameArea">
+            <h2 class="msg"> </h2>
+
+            <div id="container">
+                <h3 id="question">What is the answer to this questions?</h3>
+                <div class="row">
+
+                    <input type='radio' id="option1" name='options' value="a" class='options'>
+                    <label for="option1"></label>
+
+                </div>
+                <div class="row">
+                    <input type='radio' id="option1" name='options' value="a" class='options'>
+                    <label for="option1"></label>
+                </div>
+                <div class="row">
+                    <input type='radio' id="option1" name='options' value="a" class='options'>
+                    <label for="option1"></label>
+                </div>
+                <div class="row">
+                    <input type='radio' id="option1" name='options' value="a" class='options'>
+                    <label for="option1"></label>
+                </div>
+
+            </div>
+            <button class="btn" id="btn" onclick="ans()">click</button>
+        </div>
+    </section>
+
+    <script>
+        const id = document.querySelector("#id");
+        const submitBtn = document.querySelector('.submitBtn');
+        const container = document.querySelector('#container');
+        const msg = document.querySelector('.msg');
+        const btn = document.getElementById('btn');
+        const ques = document.getElementById('question');
+        const option = document.querySelectorAll('.options');
+
+        // console.log(option);
+        // const geder = document.querySelectorAll('.gender')
+        let questions = [];
+
+
+        function startGame() {
+
+            fetch(
+                'https://opentdb.com/api.php?amount=1'
+            )
+                .then((res) => {
+                    return res.json();
+                })
+                .then((loadedQuestions) => {
+                    questions = loadedQuestions.results.map((loadedQuestion) => {
+                        const formattedQuestion = {
+                            question: loadedQuestion.question,
+                        };
+
+                        const answerChoices = [...loadedQuestion.incorrect_answers];
+                        formattedQuestion.answer = `${Math.floor(Math.random() * 4) + 1}`;
+
+                        answerChoices.splice(
+                            formattedQuestion.answer - 1,
+                            0,
+                            loadedQuestion.correct_answer
+                        );
+
+                        answerChoices.forEach((choice, index) => {
+                            formattedQuestion[(index + 1)] = choice;
+                        });
+                        // console.log(formattedQuestion);
+                        // $('#cont').append(`<h3> ${formattedQuestion.question} </h3> `);
+                        question.innerHTML = ` ${formattedQuestion.question}`;
+                        let ans = Object.keys(formattedQuestion);
+                        window.value = formattedQuestion.answer;
+                        // console.log(window.value);
+                        let choiceArr = [];
+                        for (const [key, val] of Object.entries(formattedQuestion)) {
+                            // console.log(key, val)
+                            if (key == '1' || key == '2' || key == '3' || key == '4') {
+                                choiceArr.push(val);
+                            }
+                        }
+                        // console.log(choiceArr);
+                        for (let i = 0; i < 4; i++) {
+                            option[i].nextElementSibling.innerHTML = " ";
+
+                        }
+
+                        for (let i = 0; i < choiceArr.length; i++) {
+
+                            // console.log(option[i]);
+                            option[i].nextElementSibling.innerHTML = choiceArr[i];
+                            option[i].setAttribute('value', i + 1)
+
+                        }
+                    });
+
+                })
+                .catch((err) => {
+                    console.error(err);
+                });
+
+            // get the ans
+
+        }
+
+        const showans = (n) => {
+
+            if (n === window.value) {
+                msg.innerText = `It's correct.`;
+                setTimeout(() => {
+                    msg.innerText = ` `;
+                }, 1000);
+
+
+            } else {
+                msg.innerText = `It's not correct.`;
+                setTimeout(() => {
+                    msg.innerText = ` `;
+                }, 1000);
+            }
+        }
+        function getAns() {
+            option.forEach((input) => {
+                if (input.checked) {
+                    let n = input.value;
+                    showans(n);
+                    // console.log(n)
+                    // return n;
+
+                }
+
+            })
+        }
+
+        function ans() {
+            // console.log(window.value);
+            let anss;
+            anss = getAns();
+
+            setTimeout(startGame, 1000);
+            reset();
+        }
+
+        const reset = () => {
+            option.forEach((input) => {
+                input.checked = false;
+            })
+        };
+
+
+        startGame();
+
+
+    </script>
+
+</body>
+
+</html>
